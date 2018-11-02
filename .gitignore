@@ -1,0 +1,22 @@
+# General
+bin/
+target/
+.classpath
+.project
+.settings
+.metadata/
+.recommenders/
+.DS_Store
+*.log
+build/
+
+
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
+.gradle/
+out/
+
+*.zip
