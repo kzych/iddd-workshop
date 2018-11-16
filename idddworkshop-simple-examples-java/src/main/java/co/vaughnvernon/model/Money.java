@@ -31,12 +31,12 @@ public final class Money {
     return new Money(this.value + money.value);
   }
 
-  public Money divideBy(final Money money) {
-    return new Money(this.value / money.value);
+  public Money divideBy(final int factor) {
+    return new Money(this.value / factor);
   }
 
-  public Money multiplyBy(final Money money) {
-    return new Money(this.value * money.value);
+  public Money multiplyBy(final int factor) {
+    return new Money(this.value * factor);
   }
 
   public Money subtract(final Money money) {
