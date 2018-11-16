@@ -51,7 +51,7 @@ public class ProposalPricingTest {
 	    
     Repositories.proposal().save(proposal);
     
-    Proposal existing = Repositories.proposal().proposalOf(proposal.id);
+    Proposal existing = Repositories.proposal().proposalOf(proposal.id());
 
     assertNotNull(existing);
     
