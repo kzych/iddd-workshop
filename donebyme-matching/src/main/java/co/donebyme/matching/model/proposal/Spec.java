@@ -5,5 +5,6 @@ enum Spec {
   PricingVerified,
   SchedulingDenied,
   SchedulingVerified,
-  Submitted
+  Submitted,
+  Resubmitted
 }

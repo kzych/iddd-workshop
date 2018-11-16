@@ -34,7 +34,7 @@ public class ProposalProjection extends Projection implements Subscriber {
   
   private void project(final PricingDenied event) {
     final ProposalView view = ProposalView.views.get(event.proposalId);
-    ProposalView.views.put(event.proposalId, view.withSchedulingDenied(event.suggestedPrice));
+    ProposalView.views.put(event.proposalId, view.withPricingDenied(event.suggestedPrice));
   }
   
   private void project(final PricingVerified event) {

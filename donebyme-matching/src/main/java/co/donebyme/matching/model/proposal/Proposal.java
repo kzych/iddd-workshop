@@ -8,18 +8,26 @@ import co.donebyme.matching.model.Description;
 import co.donebyme.matching.model.Id;
 import co.donebyme.matching.model.Summary;
 import co.vaughnvernon.mockroservices.model.DomainEvent;
-import co.vaughnvernon.mockroservices.model.EventSourcedRootEntity;
+import co.vaughnvernon.mockroservices.model.SourcedEntity;
 
-public class Proposal extends EventSourcedRootEntity {
-  public Id id;
-  public Client client;
-  public Expectations expectations;
-  public Progress progress;
+public class Proposal extends SourcedEntity<DomainEvent> {
+  private Id id;
+  private Client client;
+  private Expectations expectations;
+  private Progress progress;
   
   public static Proposal submitFor(final Client client, final Expectations expectations) {
     return new Proposal(client, expectations);
   }
-  
+
+  public Id id() {
+    return id;
+  }
+
+  public void resubmitFor(final Expectations expectations) {
+    apply(new ProposalResubmitted(id, client, expectations));
+  }
+
   public void denyPricing(final long suggestedPrice) {
     if (!progress.wasPricingDenied()) {
       apply(new PricingDenied(id, client, expectations, suggestedPrice));
@@ -82,6 +90,18 @@ public class Proposal extends EventSourcedRootEntity {
     this.progress = Progress.Submitted;
   }
   
+  protected void when(final ProposalResubmitted event) {
+    this.expectations =
+            Expectations.of(
+                Summary.has(event.summary),
+                Description.has(event.description),
+                Expectations.convertToKeywords(event.keywords),
+                new Date(event.completedBy),
+                Expectations.convertToSteps(event.steps),
+                event.price);
+    
+    this.progress = Progress.Resubmitted;
+  }
   protected void when(final PricingDenied event) {
     this.expectations = expectations.withAdjusted(event.suggestedPrice);
     this.progress = progress.deniedForPricing();

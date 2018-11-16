@@ -6,6 +6,7 @@ import java.util.Set;
 public final class Progress {
   public static Progress None = new Progress();
   public static Progress Submitted = new Progress(Spec.Submitted);
+  public static Progress Resubmitted = new Progress(Spec.Resubmitted);
 
   protected final Set<Spec> specs;
 

@@ -25,9 +25,9 @@ public class JournalProposalRepository
   @Override
   public void save(final Proposal proposal) {
     journal.write(
-        proposal.id.value,
-        proposal.mutatedVersion(),
-        toBatch(proposal.mutatingEvents()));
+        proposal.id().value,
+        proposal.nextVersion(),
+        toBatch(proposal.applied()));
   }
 
   protected JournalProposalRepository() {
