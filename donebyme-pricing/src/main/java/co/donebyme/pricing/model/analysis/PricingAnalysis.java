@@ -6,9 +6,9 @@ import java.util.List;
 import co.donebyme.pricing.model.Id;
 import co.donebyme.pricing.model.PricingClassification;
 import co.vaughnvernon.mockroservices.model.DomainEvent;
-import co.vaughnvernon.mockroservices.model.EventSourcedRootEntity;
+import co.vaughnvernon.mockroservices.model.SourcedEntity;
 
-public class PricingAnalysis extends EventSourcedRootEntity {
+public class PricingAnalysis extends SourcedEntity<DomainEvent> {
   private Id id;
   private Date dueDate;
   private long price;

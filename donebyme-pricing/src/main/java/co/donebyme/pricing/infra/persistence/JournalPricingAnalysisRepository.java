@@ -26,8 +26,8 @@ public class JournalPricingAnalysisRepository
   public void save(final PricingAnalysis pricingAnalysis) {
     journal.write(
         pricingAnalysis.id().value,
-        pricingAnalysis.mutatedVersion(),
-        toBatch(pricingAnalysis.mutatingEvents()));
+        pricingAnalysis.nextVersion(),
+        toBatch(pricingAnalysis.applied()));
   }
 
   JournalPricingAnalysisRepository() {
