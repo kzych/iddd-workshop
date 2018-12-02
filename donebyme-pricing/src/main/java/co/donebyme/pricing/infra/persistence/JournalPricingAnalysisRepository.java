@@ -19,7 +19,7 @@ public class JournalPricingAnalysisRepository
     final EventStream stream =
         reader.streamFor(id.value);
     
-    return new PricingAnalysis(toEvents(stream.stream), stream.streamVersion);
+    return new PricingAnalysis(toSourceStream(stream.stream), stream.streamVersion);
   }
 
   @Override
