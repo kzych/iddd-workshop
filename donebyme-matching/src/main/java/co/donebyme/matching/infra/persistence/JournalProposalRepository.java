@@ -19,7 +19,7 @@ public class JournalProposalRepository
     final EventStream stream =
         reader.streamFor(id.value);
     
-    return new Proposal(toEvents(stream.stream), stream.streamVersion);
+    return new Proposal(toSourceStream(stream.stream), stream.streamVersion);
   }
 
   @Override
