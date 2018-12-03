@@ -10,7 +10,7 @@ public class MatchingJournalPublisher {
 
   static {
     final MessageBus messageBus = MessageBus.start("donebyme");
-    final Topic topic = messageBus.openTopic("matching");
+    final Topic topic = messageBus.openTopic("all");
     
     journalPublisher =
         EventJournalPublisher.using(

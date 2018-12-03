@@ -14,7 +14,7 @@ import co.vaughnvernon.mockroservices.model.DomainEvent;
 public class ProposalProjection extends Projection implements Subscriber {
   public ProposalProjection() {
     final MessageBus messageBus = MessageBus.start("donebyme");
-    final Topic topic = messageBus.openTopic("matching");
+    final Topic topic = messageBus.openTopic("all");
     topic.subscribe(this);
   }
 

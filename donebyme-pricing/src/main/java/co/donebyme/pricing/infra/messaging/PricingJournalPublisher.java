@@ -10,7 +10,7 @@ public class PricingJournalPublisher {
 
   static {
     final MessageBus messageBus = MessageBus.start("donebyme");
-    final Topic topic = messageBus.openTopic("pricing");
+    final Topic topic = messageBus.openTopic("all");
     
     journalPublisher =
         EventJournalPublisher.using(

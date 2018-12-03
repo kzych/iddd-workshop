@@ -34,21 +34,24 @@ public class ProposalPricingTest {
       @Override
       public void handle(Message message) {
         received = true;
-        if (message.type.endsWith("PricingVerified")) {
+        switch (message.type) {
+        case "co.donebyme.pricing.model.analysis.PricingVerified":
           System.out.println("Round Trip: PricingVerified");
-        } else {
+          break;
+        case "co.donebyme.pricing.model.analysis.PricingRejected":
           System.out.println("Round Trip: PricingRejected");
+          break;
         }
       }
     };
     
     MessageBus
       .start("donebyme")
-      .openTopic("pricing")
+      .openTopic("all")
       .subscribe(subscriber);
     
     final Proposal proposal = Proposal.submitFor(client(), expectations());
-	    
+    
     Repositories.proposal().save(proposal);
     
     Proposal existing = Repositories.proposal().proposalOf(proposal.id());
