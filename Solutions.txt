@@ -26,6 +26,29 @@ Skill:
     return Rank.of(qualifications.stream().mapToDouble(qualification -> qualification.score).sum());
   }
 
+Rank:
+package co.donebyme.profile.model.doer.skills;
+
+public final class Rank {
+  public enum Preferredness { Preferred, NonPerferred }
+  
+  public final double total;
+  public final Preferredness preferredness;
+  
+  public static Rank of(final double total) {
+    return new Rank(total);
+  }
+  
+  public static Preferredness preferrednessOf(final double total) {
+    return total > 2.0 ? Preferredness.Preferred : Preferredness.NonPerferred;
+  }
+
+  private Rank(final double total) {
+    this.total = total;
+    this.preferredness = preferrednessOf(total);
+  }
+}
+
 
 DoerRank:
 package co.donebyme.profile.model.doer.ranking;
@@ -294,6 +317,49 @@ public class Proposal extends SourcedEntity<DomainEvent> {
     super(stream, (int) streamVersion);
   }
 }
+
+ProposalMatched:
+package co.donebyme.matching.model.proposal;
+
+import co.donebyme.matching.model.Doer;
+import co.vaughnvernon.mockroservices.model.DomainEvent;
+
+public final class ProposalMatched extends DomainEvent {
+  public final String proposalId;
+  public final String clientId;
+  public final String doerId;
+  public final boolean preferred;
+
+  public ProposalMatched(final Proposal proposal, final Doer doer) {
+    this.proposalId = proposal.id().value;
+    this.clientId = proposal.client().id.value;
+    this.doerId = doer.id.value;
+    this.preferred = doer.preferred;
+  }
+}
+
+
+ProposalPreviouslyMatched:
+package co.donebyme.matching.model.proposal;
+
+import co.donebyme.matching.model.Doer;
+import co.vaughnvernon.mockroservices.model.DomainEvent;
+
+public final class ProposalPreviouslyMatched extends DomainEvent {
+  public final String proposalId;
+  public final String clientId;
+  public final String doerId;
+  public final boolean preferred;
+
+  public ProposalPreviouslyMatched(final Proposal proposal, final Doer doer) {
+    this.proposalId = proposal.id().value;
+    this.clientId = proposal.client().id.value;
+    this.doerId = doer.id.value;
+    this.preferred = doer.preferred;
+  }
+}
+
+
 
 ProposalProcess:
 package co.donebyme.matching.infra.messaging;

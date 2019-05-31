@@ -1,12 +1,10 @@
 package co.donebyme.matching.model.proposal;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import co.donebyme.matching.model.Client;
 import co.donebyme.matching.model.Description;
-import co.donebyme.matching.model.Doer;
 import co.donebyme.matching.model.Id;
 import co.donebyme.matching.model.Summary;
 import co.vaughnvernon.mockroservices.model.DomainEvent;
@@ -15,8 +13,6 @@ import co.vaughnvernon.mockroservices.model.SourcedEntity;
 public class Proposal extends SourcedEntity<DomainEvent> {
   private Id id;
   private Client client;
-  private Doer doer;
-  private List<Doer> alternateDoers;
   private Expectations expectations;
   private Progress progress;
 
@@ -30,14 +26,6 @@ public class Proposal extends SourcedEntity<DomainEvent> {
   
   public Id id() {
     return id;
-  }
-
-  public void matchWith(final Doer doer) {
-    if (!progress.wasMatched()) {
-      apply(new ProposalMatched(this, doer));
-    } else if (!this.doer.equals(doer) && !alternateDoers.contains(doer)) {
-      apply(new ProposalPreviouslyMatched(this, doer));
-    }
   }
 
   public void resubmitFor(final Expectations expectations) {
@@ -103,8 +91,6 @@ public class Proposal extends SourcedEntity<DomainEvent> {
             new Date(event.completedBy),
             Expectations.convertToSteps(event.steps),
             event.price);
-    this.doer = null;
-    this.alternateDoers = new ArrayList<>(0);
     this.progress = Progress.Submitted;
   }
   
@@ -119,15 +105,6 @@ public class Proposal extends SourcedEntity<DomainEvent> {
                 event.price);
     
     this.progress = Progress.Resubmitted;
-  }
-
-  protected void when(final ProposalMatched event) {
-    this.doer = Doer.from(event.doerId, event.preferred);
-    this.progress = progress.matched();
-  }
-
-  protected void when(final ProposalPreviouslyMatched event) {
-    this.alternateDoers.add(Doer.from(event.doerId, event.preferred));
   }
 
   protected void when(final PricingDenied event) {
@@ -149,7 +126,6 @@ public class Proposal extends SourcedEntity<DomainEvent> {
   }
 
   Client client() { return client; }
-  Doer doer() { return doer; }
   Progress progress() { return progress; }
 
   private Proposal(final Client client, final Expectations expectations) {

@@ -23,19 +23,7 @@ public final class Skills {
   }
 
   public Rank rankFor(final SkillClassification classification) {
-    return skills
-      .stream()
-      .filter(skill -> skill.classification.equals(classification))
-      .map(skill -> skill.rank())
-      .findFirst()
-      .orElse(Rank.of(0));
-    
-//    for (Skill skill : skills) {
-//      if (skill.classification.equals(classification)) {
-//        return skill.rank();
-//      }
-//    }
-//    return Rank.of(0);
+    return Rank.of(0);
   }
 
   private Skills(final Set<Skill> skills) {
