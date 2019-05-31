@@ -8,6 +8,7 @@ target/
 .recommenders/
 .DS_Store
 *.log
+mockroservices-java
 build/
 
 
