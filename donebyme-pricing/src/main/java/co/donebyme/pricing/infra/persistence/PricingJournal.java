@@ -1,17 +1,17 @@
 package co.donebyme.pricing.infra.persistence;
 
-import co.vaughnvernon.mockroservices.eventjournal.EventJournal;
+import co.vaughnvernon.mockroservices.journal.Journal;
 
 public class PricingJournal {
-  public static final EventJournal eventJournal;
+  public static final Journal journal;
   
   static {
-    eventJournal = EventJournal.open("donebyme-pricing");
+    journal = Journal.open("donebyme-pricing");
   }
 
   public static void start() { }
   
   public static void stop() {
-    eventJournal.close();
+    journal.close();
   }
 }

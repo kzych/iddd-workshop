@@ -18,6 +18,10 @@ public final class Progress {
     return wasSubmitted() && wasPricingDenied() || wasSchedulingDenied();
   }
 
+  public boolean wasMatched() {
+    return specs.contains(Spec.Matched);
+  }
+
   public boolean wasPricingDenied() {
     return specs.contains(Spec.PricingDenied);
   }
@@ -58,20 +62,24 @@ public final class Progress {
   public String toString() {
     return "Progress[specs=" + specs + "]";
   }
+  
+  Progress matched() {
+    return withNewSpec(Spec.Matched);
+  }
 
-  protected Progress deniedForPricing() {
+  Progress deniedForPricing() {
     return withNewSpec(Spec.PricingDenied);
   }
 
-  protected Progress deniedForScheduling() {
+  Progress deniedForScheduling() {
     return withNewSpec(Spec.SchedulingDenied);
   }
 
-  protected Progress verifiedForPricing() {
+  Progress verifiedForPricing() {
     return withNewSpec(Spec.PricingVerified);
   }
 
-  protected Progress verifiedForScheduling() {
+  Progress verifiedForScheduling() {
     return withNewSpec(Spec.SchedulingVerified);
   }
 

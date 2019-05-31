@@ -73,7 +73,7 @@ public final class Expectations {
     return this.summary.equals(otherExpectations.summary) &&
         this.description.equals(otherExpectations.description) &&
         this.keywords.equals(otherExpectations.keywords) &&
-        this.completedBy.equals(completedBy) &&
+        this.completedBy.equals(otherExpectations.completedBy) &&
         this.steps.equals(otherExpectations.steps);
   }
 

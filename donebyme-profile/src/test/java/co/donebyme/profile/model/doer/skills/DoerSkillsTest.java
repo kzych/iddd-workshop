@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import co.donebyme.profile.model.doer.Doer;
+
 public class DoerSkillsTest {
 
   @Test
@@ -14,14 +16,10 @@ public class DoerSkillsTest {
             Skill.of(
                     SkillClassification.from(
                             Keyword.is("#windows"),
-                            Keyword.is("#washing"),
-                            Keyword.is("#inside"),
-                            Keyword.is("#outside"),
-                            Keyword.is("#extra-tall")),
+                            Keyword.is("#washing")),
                     Qualifications.of(
                             Qualification.Certified,
                             Qualification.Bonded,
-                            Qualification.Licensed,
                             Qualification.Years),
                     Rate.flatRateOf(10000));
 
@@ -30,13 +28,50 @@ public class DoerSkillsTest {
     assertEquals(skill.classification,
             SkillClassification.from(
                     Keyword.is("#windows"),
-                    Keyword.is("#washing"),
-                    Keyword.is("#inside"),
-                    Keyword.is("#outside"),
-                    Keyword.is("#extra-tall")));
-
-    Skills doerSkills = Skills.startingWith(skill);
+                    Keyword.is("#washing")));
     
-    assertTrue(doerSkills.declares(skill));
+    Skills skills = Skills.startingWith(skill);
+    
+    assertTrue(skills.declares(skill));
+    
+    Doer doer = Doer.with(Skills.startingWith(
+            Skill.of(
+              SkillClassification.from(
+                      Keyword.is("#windows"),
+                      Keyword.is("#washing")),
+              Qualifications.of(
+                      Qualification.Certified,
+                      Qualification.Bonded,
+                      Qualification.Years),
+              Rate.flatRateOf(10000))));
+  }
+
+  public void testThatMarcHasScoreOf195() {
+    Doer marc = marcDoer();
+    SkillClassification classification =
+      windowWashing();
+    //Rank rank = marc.rankFor(classification);
+    //assertEquals(1.95D, rank.total, 0);
+  }
+
+  private SkillClassification windowWashing() {
+    return SkillClassification.from(
+            Keyword.is("#windows"),
+            Keyword.is("#washing"));
+  }
+
+  private Doer marcDoer() {
+    Doer doer = Doer.with(Skills.startingWith(
+            Skill.of(
+              SkillClassification.from(
+                      Keyword.is("#windows"),
+                      Keyword.is("#washing")),
+              Qualifications.of(
+                      Qualification.Licensed,
+                      Qualification.Certified,
+                      Qualification.Bonded),
+              Rate.flatRateOf(10000))));
+    
+    return doer;
   }
 }

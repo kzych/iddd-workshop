@@ -21,6 +21,14 @@ public class ProposalCommands {
     this.repository = repository;
   }
   
+  public void match(String proposalId, String doerId, boolean preferred) {
+    final Proposal proposal = repository.proposalOf(Id.fromExisting(proposalId));
+
+    //proposal.matchWith(Doer.from(doerId, preferred));
+
+    repository.save(proposal);
+  }
+  
   public void denyPricing(
       final String proposalId,
       final long suggestedPrice) {

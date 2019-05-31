@@ -33,12 +33,13 @@ public class ProposalPricingTest {
     Subscriber subscriber = new Subscriber() {
       @Override
       public void handle(Message message) {
-        received = true;
         switch (message.type) {
         case "co.donebyme.pricing.model.analysis.PricingVerified":
+          received = true;
           System.out.println("Round Trip: PricingVerified");
           break;
         case "co.donebyme.pricing.model.analysis.PricingRejected":
+          received = true;
           System.out.println("Round Trip: PricingRejected");
           break;
         }

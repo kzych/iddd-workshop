@@ -1,17 +1,17 @@
 package co.donebyme.matching.infra.persistence;
 
-import co.vaughnvernon.mockroservices.eventjournal.EventJournal;
+import co.vaughnvernon.mockroservices.journal.Journal;
 
 public class MatchingJournal {
-  public static final EventJournal eventJournal;
+  public static final Journal journal;
   
   static {
-    eventJournal = EventJournal.open("donebyme-matching");
+    journal = Journal.open("donebyme-matching");
   }
 
   public static void start() { }
   
   public static void stop() {
-    eventJournal.close();
+    journal.close();
   }
 }

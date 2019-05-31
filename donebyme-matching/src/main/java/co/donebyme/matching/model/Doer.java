@@ -12,6 +12,10 @@ public final class Doer {
     return new Doer(Id.fromExisting(referencedId), true);
   }
   
+  public static Doer from(final String referencedId, final boolean isPreferred) {
+    return new Doer(Id.fromExisting(referencedId), isPreferred);
+  }
+  
   @Override
   public int hashCode() {
     return id.hashCode() + (preferred ? 1:0);

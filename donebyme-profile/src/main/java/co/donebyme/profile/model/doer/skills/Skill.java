@@ -9,6 +9,10 @@ public final class Skill implements Comparable<Skill> {
     return new Skill(classification, qualifications, rate);
   }
 
+  public Rank rank() {
+    return Rank.of(qualifications.stream().mapToDouble(qualification -> qualification.score).sum());
+  }
+
   @Override
   public int compareTo(final Skill other) {
     final int classificationCompare = classification.compareTo(other.classification);

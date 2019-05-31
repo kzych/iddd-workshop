@@ -22,6 +22,7 @@ public class AllTopicSubscriber implements Subscriber {
   @Override
   public void handle(final Message message) {
     final MessageExchangeReader reader = MessageExchangeReader.from(message);
+
     switch (message.type) {
     case "co.donebyme.matching.model.proposal.ProposalSubmitted":
       API.pricingVerification().verifyPricing(

@@ -6,5 +6,6 @@ enum Spec {
   SchedulingDenied,
   SchedulingVerified,
   Submitted,
-  Resubmitted
+  Resubmitted,
+  Matched;
 }
