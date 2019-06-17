@@ -1,10 +1,10 @@
-Doer:
+============= Doer ============= 
   public Rank rankFor(final SkillClassification classification) {
     return skills.rankFor(classification);
   }
 
 
-Skills:
+============= Skills ============= 
   public Rank rankFor(final SkillClassification classification) {
     return skills
       .stream()
@@ -21,12 +21,14 @@ Skills:
 //    return Rank.of(0);
   }
 
-Skill:
+
+============= Skill ============= 
   public Rank rank() {
     return Rank.of(qualifications.stream().mapToDouble(qualification -> qualification.score).sum());
   }
 
-Rank:
+
+============= Rank ============= 
 package co.donebyme.profile.model.doer.skills;
 
 public final class Rank {
@@ -50,7 +52,7 @@ public final class Rank {
 }
 
 
-DoerRank:
+============= DoerRank ============= 
 package co.donebyme.profile.model.doer.ranking;
 
 import co.donebyme.profile.model.doer.Doer;
@@ -70,7 +72,8 @@ public class DoerRank {
   }
 }
 
-Ranking:
+
+============= Ranking ============= 
 package co.donebyme.profile.model.doer.ranking;
 
 import java.util.Set;
@@ -100,7 +103,8 @@ public final class Ranking {
   }
 }
 
-RankingCalculator:
+
+============= RankingCalculator ============= 
 package co.donebyme.profile.model.doer.ranking;
 
 import java.util.ArrayList;
@@ -133,7 +137,8 @@ public final class RankingCalculator {
   }
 }
 
-Proposal:
+
+============= Proposal ============= 
 package co.donebyme.matching.model.proposal;
 
 import java.util.Date;
@@ -318,7 +323,8 @@ public class Proposal extends SourcedEntity<DomainEvent> {
   }
 }
 
-ProposalMatched:
+
+============= ProposalMatched ============= 
 package co.donebyme.matching.model.proposal;
 
 import co.donebyme.matching.model.Doer;
@@ -339,7 +345,7 @@ public final class ProposalMatched extends DomainEvent {
 }
 
 
-ProposalPreviouslyMatched:
+============= ProposalPreviouslyMatched ============= 
 package co.donebyme.matching.model.proposal;
 
 import co.donebyme.matching.model.Doer;
@@ -360,8 +366,81 @@ public final class ProposalPreviouslyMatched extends DomainEvent {
 }
 
 
+============= ProposalProcess (1) ============= 
+package co.donebyme.matching.model.proposal;
+ 
+import java.util.List;
+ 
+import co.donebyme.matching.model.Client;
+import co.donebyme.matching.model.Id;
+import co.vaughnvernon.mockroservices.model.Command;
+import co.vaughnvernon.mockroservices.model.SourcedEntity;
+ 
+public class ProposalProcess extends SourcedEntity<Command> {
+  private Id processId;
+  private Id proposalId;
+  private Step currentStep;
+   
+  public ProposalProcess(List<Command> stream, int streamVersion) {
+    super(stream, streamVersion);
+  }
+ 
+  public ProposalProcess(Id proposalId) {
+    this.processId = Id.unique();
+    this.proposalId = proposalId;
+  }
+ 
+  public void onProposalSubmitted(Client client, Expectations expectations) {
+    apply(new AnalyzePricing(processId.value, client.id.value, expectations...));
+  }
+ 
+  public void onPricingVerified() {
+    Proposal proposal = proposalRepository.proposalOf(proposalId);
+    proposal.verifyPricing();
+    proposalRepository.save(proposal);
+    apply(new RecommendDoers(...));
+  }
+ 
+  public void onPricingRejected(long suggestedPrice) {
+    Proposal proposal = proposalRepository.proposalOf(proposalId);
+    proposal.denyPricing(suggestedPrice);
+    proposalRepository.save(proposal);
+    endProcess();
+  }
+   
+  public void onDoersRecommended(Set<Doer> recommendedDoers) {
+    Proposal proposal = proposalRepository.proposalOf(proposalId);
+    proposal.recommendDoers(recommendedDoers);
+    proposalRepository.save(proposal);
+    apply(new LocateAvailability(...));
+  }
+   
+  public void onAvailabilityLocated(Set<Doer> availableDoers) {
+    Proposal proposal = proposalRepository.proposalOf(proposalId);
+    proposal.availableDoers(availableDoers);
+    proposalRepository.save(proposal);
+    apply(new NotifyAvailableDoers(...));
+  }
+   
+  protected void when(AnalyzePricing command) {
+     
+  }
+   
+  protected void when(RecommendDoers command) {
+     
+  }
+   
+  protected void when(LocateAvailability command) {
+     
+  }
+   
+  protected void when(NotifyAvailableDoers command) {
+     
+  }
+}
 
-ProposalProcess:
+
+============= ProposalProcess (2) ============= 
 package co.donebyme.matching.infra.messaging;
 
 import java.util.List;
