@@ -16,7 +16,7 @@ import co.donebyme.matching.model.Summary;
 
 public class ProposalTest {
 
-  @Test
+  //@Test
   public void testThatProposalMatchesWithDoer() {
     // given
     Proposal proposal = Proposal.submitFor(client(), expectations());
