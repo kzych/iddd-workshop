@@ -37,6 +37,10 @@ public final class Qualifications {
     return all.equals(((Qualifications) other).all);
   }
 
+  public Rank rank() {
+    return Rank.of(all.stream().mapToDouble(q -> q.score).sum());
+  }
+
   private Qualifications(final Qualification...qualifications) {
     all = new TreeSet<>(Arrays.asList(qualifications));
   }

@@ -45,13 +45,13 @@ public class DoerSkillsTest {
                       Qualification.Years),
               Rate.flatRateOf(10000))));
   }
-
+  @Test
   public void testThatMarcHasScoreOf195() {
     Doer marc = marcDoer();
     SkillClassification classification =
       windowWashing();
-    //Rank rank = marc.rankFor(classification);
-    //assertEquals(1.95D, rank.total, 0);
+    Rank rank = marc.rankFor(classification);
+    assertEquals(1.95D, rank.total, 0);
   }
 
   private SkillClassification windowWashing() {

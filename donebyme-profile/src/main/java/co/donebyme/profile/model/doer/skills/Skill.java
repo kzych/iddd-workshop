@@ -24,4 +24,12 @@ public final class Skill implements Comparable<Skill> {
     this.qualifications = qualifications;
     this.rate = rate;
   }
+
+  public Rank rank() {
+    return qualifications.rank();
+  }
+
+  public boolean isFor(SkillClassification classification) {
+    return this.classification.equals(classification);
+  }
 }
