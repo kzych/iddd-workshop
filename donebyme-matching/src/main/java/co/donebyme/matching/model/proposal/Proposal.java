@@ -3,10 +3,7 @@ package co.donebyme.matching.model.proposal;
 import java.util.Date;
 import java.util.List;
 
-import co.donebyme.matching.model.Client;
-import co.donebyme.matching.model.Description;
-import co.donebyme.matching.model.Id;
-import co.donebyme.matching.model.Summary;
+import co.donebyme.matching.model.*;
 import co.vaughnvernon.mockroservices.model.DomainEvent;
 import co.vaughnvernon.mockroservices.model.SourcedEntity;
 
@@ -15,6 +12,7 @@ public class Proposal extends SourcedEntity<DomainEvent> {
   private Client client;
   private Expectations expectations;
   private Progress progress;
+  private Doer doer;
 
   public static Proposal submitFor(final Client client, final Expectations expectations) {
     return new Proposal(client, expectations);
@@ -124,6 +122,10 @@ public class Proposal extends SourcedEntity<DomainEvent> {
   protected void when(final SchedulingVerified event) {
     this.progress = progress.verifiedForScheduling();
   }
+  protected void when(final ProposalMatched event) {
+    this.progress = progress.matched();
+    this.doer = Doer.from(event.doerId, event.isPreferred);
+  }
 
   Client client() { return client; }
   Progress progress() { return progress; }
@@ -138,5 +140,15 @@ public class Proposal extends SourcedEntity<DomainEvent> {
 
   public Proposal(final List<DomainEvent> stream, final long streamVersion) {
     super(stream, (int) streamVersion);
+  }
+
+  public void matchWith(Doer doer) {
+    if(isAcceptable() && !progress.wasMatched()) {
+      apply(new ProposalMatched(id, doer));
+    }
+  }
+
+  public Doer doer() {
+    return this.doer;
   }
 }

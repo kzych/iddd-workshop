@@ -16,7 +16,7 @@ import co.donebyme.matching.model.Summary;
 
 public class ProposalTest {
 
-  //@Test
+  @Test
   public void testThatProposalMatchesWithDoer() {
     // given
     Proposal proposal = Proposal.submitFor(client(), expectations());
@@ -26,13 +26,13 @@ public class ProposalTest {
     proposal.applied().clear();
     
     // when
-    //proposal.matchWith(doer());
+    proposal.matchWith(doer());
     
     // then
     assertEquals(1, proposal.applied().size());
-    //assertEquals(ProposalMatched.class, proposal.applied().get(0).getClass());
+    assertEquals(ProposalMatched.class, proposal.applied().get(0).getClass());
     assertEquals(client(), proposal.client());
-    //assertEquals(doer(), proposal.doer());
+    assertEquals(doer(), proposal.doer());
     assertTrue(proposal.progress().wasMatched());
   }
 
