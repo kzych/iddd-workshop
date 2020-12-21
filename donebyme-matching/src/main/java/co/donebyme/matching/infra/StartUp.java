@@ -2,7 +2,7 @@ package co.donebyme.matching.infra;
 
 import co.donebyme.matching.infra.messaging.AllTopicSubscriber;
 import co.donebyme.matching.infra.messaging.MatchingJournalPublisher;
-import co.donebyme.matching.infra.messaging.ProposalProcess;
+import co.donebyme.matching.model.proposal.ProposalProcess;
 import co.donebyme.matching.infra.persistence.MatchingJournal;
 
 public class StartUp {

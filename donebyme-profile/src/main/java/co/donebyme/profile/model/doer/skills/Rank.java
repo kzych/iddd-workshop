@@ -15,4 +15,8 @@ public final class Rank {
   private Rank(final double total) {
     this.total = total;
   }
+
+  public double total(){
+    return total;
+  }
 }
